@@ -26,7 +26,7 @@ export default function EditUser() {
 
   useEffect(()=>{
     fetchProduct()
-  })
+  },[])
 
   const fetchProduct = async () => {
     await axios.get(`http://localhost:8000/api/productos/${id}`).then(({data})=>{
@@ -113,7 +113,7 @@ export default function EditUser() {
                       <Col>
                         <Form.Group controlId="Name">
                             <Form.Label>Nombre</Form.Label>
-                            <Form.Control type="text" value={title} onChange={(event)=>{
+                            <Form.Control type="text" value={name} onChange={(event)=>{
                               setName(event.target.value)
                             }}/>
                         </Form.Group>

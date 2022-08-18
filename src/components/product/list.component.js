@@ -1,45 +1,21 @@
-import React, { useEffect, useState,useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
-
-import Pagination from '../pagination/Pagination';
-import './style.scss';
-let PageSize = 10;
 export default function List() {
 
     const [products, setProducts] = useState([])
-	 
-	   const [error, setError] = useState("");
-  const [loaded, setLoaded] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0)
  const navigate = useNavigate();
- 
-     useEffect(()=>{
+    useEffect(()=>{
         fetchProducts() 
-    },[]) 
- 
-     const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return products.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+    })
 
     const fetchProducts = async () => {
-			try{
-				await axios.get(`http://localhost:8000/api/productos/listProducts`).then(({data})=>{
-					setProducts(data)
-					 setCurrentPage(1);
-				}).catch(err => {
-				   console.log(err);
-				   });
-			} catch (error) {
-				setError(error.message);
-			  } finally {
-				setLoaded(true);
-			  }
+        await axios.get(`http://localhost:8000/api/productos/listProducts`).then(({data})=>{
+            setProducts(data)
+        })
     }
 
     const deleteProduct = async (id) => {
@@ -67,11 +43,8 @@ export default function List() {
             Swal.fire({
                 icon:"success",
                 text:data.message
-            }).then(function() {
- 
-	 fetchProducts();
-});
-           
+            })
+             navigate("/")
           }).catch(({response:{data}})=>{
             Swal.fire({
                 text:data.message,
@@ -95,24 +68,25 @@ export default function List() {
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
+									<th>Precio</th>
+									<th>Titulo</th>
                                     <th>Descripcion</th>
-                                    <th>Precio</th>
                                     <th>Imagen</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-							
                                 {
 									
-                                    currentTableData.length > 0 && (
-                                        currentTableData.map((row, key)=>(
+                                    products.length > 0 && (
+                                        products.map((row, key)=>(
                                             <tr key={key}>
+                                                <td>{row.nombre}</td>
+                                                <td>{row.precio}</td>
                                                 <td>{row.titulo}</td>
                                                 <td>{row.descripcion}</td>
-                                                <td>{row.precio}</td>
                                                 <td>
-                                                    <img width="150px" alt='' src={`http://localhost:8000/product/image/${row?.imagen}`} />
+                                                    <img width="150px" alt='' src={`http://localhost:8000/products/image/${row?.imagen}`} />
                                                 </td>
                                                 <td>
                                                     <Link to={`/product/edit/${row.id}`} className='btn btn-success me-2'>
@@ -126,17 +100,8 @@ export default function List() {
                                         ))
                                     )
                                 }
-								
                             </tbody>
-								
                         </table>
-						<Pagination
-								className="pagination-bar"
-								currentPage={currentPage}
-								totalCount={products.length}
-								pageSize={PageSize}
-								onPageChange={page => setCurrentPage(page)}
-								/>
                     </div>
                 </div>
             </div>
