@@ -29,7 +29,7 @@ export default function EditUser() {
   })
 
   const fetchProduct = async () => {
-    await axios.get(`http://localhost:8000/api/productos/${id}`).then(({data})=>{
+    await axios.get(`https://backend.karenaguirre.online/api/productos/${id}`).then(({data})=>{
 	 
       const { titulo, descripcion,imagen,nombre,precio } = data
       setTitle(titulo)
@@ -64,7 +64,7 @@ export default function EditUser() {
       formData.append('image', image)
     }
 
-    await axios.post(`http://localhost:8000/api/productos/update`, formData).then(({data})=>{
+    await axios.post(`https://backend.karenaguirre.online/api/productos/update`, formData).then(({data})=>{
       Swal.fire({
         icon:"success",
         text:data.message

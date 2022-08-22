@@ -32,7 +32,7 @@ export default function CreateProduct() {
     formData.append('nombre', name)
     formData.append('precio', price)
 
-    await axios.post(`http://localhost:8000/api/productos/create`, formData).then(({data})=>{
+    await axios.post(`https://backend.karenaguirre.online/api/productos/create`, formData).then(({data})=>{
       Swal.fire({
         icon:"success",
         text:data.message

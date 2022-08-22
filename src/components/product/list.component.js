@@ -29,7 +29,7 @@ export default function List() {
 
     const fetchProducts = async () => {
 			try{
-				await axios.get(`http://localhost:8000/api/productos/listProducts`).then(({data})=>{
+				await axios.get(`https://backend.karenaguirre.online/api/productos/listProducts`).then(({data})=>{
 					setProducts(data)
 					 setCurrentPage(1);
 				}).catch(err => {
@@ -63,7 +63,7 @@ export default function List() {
            formData.append('id', id)
  
 
-          await axios.post(`http://localhost:8000/api/productos/deleteProduct`, formData).then(({data})=>{
+          await axios.post(`https://backend.karenaguirre.online/api/productos/deleteProduct`, formData).then(({data})=>{
             Swal.fire({
                 icon:"success",
                 text:data.message
@@ -112,7 +112,7 @@ export default function List() {
                                                 <td>{row.descripcion}</td>
                                                 <td>{row.precio}</td>
                                                 <td>
-                                                    <img width="150px" alt='' src={`http://localhost:8000/product/image/${row?.imagen}`} />
+                                                    <img width="150px" alt='' src={`https://backend.karenaguirre.online/product/image/${row?.imagen}`} />
                                                 </td>
                                                 <td>
                                                     <Link to={`/product/edit/${row.id}`} className='btn btn-success me-2'>
